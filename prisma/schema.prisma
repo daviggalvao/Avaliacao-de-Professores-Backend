@@ -7,17 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
+model User {
   id Int @id @default(autoincrement())
 
-  nome String
-  email String @unique
-  senha String
+  nome         String
+  email        String @unique
+  senha        String
   departamento String
-  curso String
-  foto_perfil Bytes
+  curso        String
+  foto_perfil  Bytes
 
-  Avaliacoes Avaliacao[]
+  Avaliacoes  Avaliacao[]
   Comentarios Comentario[]
 
   createdAt DateTime @default(now())
