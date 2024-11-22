@@ -1,1 +1,4 @@
-export class CreateComentarioDto {}
+export class CreateComentarioDto {
+
+  
+}
