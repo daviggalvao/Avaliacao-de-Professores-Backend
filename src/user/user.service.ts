@@ -8,17 +8,28 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.prisma.user.create({
-      data: createUserDto,
+      data: {
+        nome: createUserDto.nome,
+        email: createUserDto.email,
+        senha: createUserDto.senha,
+        curso: createUserDto.curso,
+        departamento: createUserDto.departamento,
+        foto_perfil: createUserDto.foto_perfil,
+      },
     });
     return user;
   }
 
   async findAll() {
-    return await `This action returns all user`;
+    return await this.prisma.user.findMany();
   }
 
   async findOne(id: number) {
-    return await `This action returns a #${id} user`;
+    return await this.prisma.user.findUnique({
+      where: { 
+        id : id, 
+      },
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
