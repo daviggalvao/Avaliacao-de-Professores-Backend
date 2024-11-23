@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ComentarioService {
+  constructor(private readonly prisma: PrismaService) {}
   async create(createComentarioDto: CreateComentarioDto) {
     return await 'This action adds a new comentario';
   }
