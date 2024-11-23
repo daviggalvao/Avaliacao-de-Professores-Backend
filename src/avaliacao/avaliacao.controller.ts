@@ -33,14 +33,14 @@ export class AvaliacaoController {
 
   @Patch(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateAvaliacaoDto: UpdateAvaliacaoDto,
   ) {
     return this.avaliacaoService.update(id, updateAvaliacaoDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     return await this.avaliacaoService.remove(id);
   }
 }

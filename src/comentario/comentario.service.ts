@@ -6,23 +6,48 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class ComentarioService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(createComentarioDto: CreateComentarioDto) {
-    return await 'This action adds a new comentario';
+    const coment = await this.prisma.comentario.create({
+      data: {
+        conteudo: createComentarioDto.conteudo,
+        usuarioID: createComentarioDto.usuarioID,
+        avaliacaoID: createComentarioDto.avaliacaoID,
+      },
+    });
+    return coment;
   }
 
   async findAll() {
-    return await `This action returns all comentario`;
+    return await this.prisma.comentario.findMany();
   }
 
   async findOne(id: number) {
-    return await `This action returns a #${id} comentario`;
+    return await this.prisma.comentario.findUnique({
+      where: {
+        id: id,
+      },
+    });
   }
 
   async update(id: number, updateComentarioDto: UpdateComentarioDto) {
-    return await `This action updates a #${id} comentario`;
+    return await this.prisma.comentario.update({
+      where: {
+        id: id,
+      },
+      data: {
+        conteudo: updateComentarioDto.conteudo,
+        usuarioID: updateComentarioDto.usuarioID,
+        avaliacaoID: updateComentarioDto.avaliacaoID,
+      },
+    });
   }
 
   async remove(id: number) {
-    return await `This action removes a #${id} comentario`;
+    return await this.prisma.comentario.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

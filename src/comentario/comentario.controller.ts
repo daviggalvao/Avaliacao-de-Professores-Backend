@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ComentarioService } from './comentario.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
@@ -16,30 +17,30 @@ export class ComentarioController {
   constructor(private readonly comentarioService: ComentarioService) {}
 
   @Post()
-  create(@Body() createComentarioDto: CreateComentarioDto) {
-    return this.comentarioService.create(createComentarioDto);
+  async create(@Body() createComentarioDto: CreateComentarioDto) {
+    return await this.comentarioService.create(createComentarioDto);
   }
 
   @Get()
-  findAll() {
-    return this.comentarioService.findAll();
+  async findAll() {
+    return await this.comentarioService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.comentarioService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.comentarioService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateComentarioDto: UpdateComentarioDto,
   ) {
-    return this.comentarioService.update(+id, updateComentarioDto);
+    return await this.comentarioService.update(id, updateComentarioDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.comentarioService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.comentarioService.remove(id);
   }
 }
