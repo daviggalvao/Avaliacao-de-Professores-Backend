@@ -5,7 +5,7 @@ import { UpdateComentarioDto } from './dto/update-comentario.dto';
 @Injectable()
 export class ComentarioService {
   async create(createComentarioDto: CreateComentarioDto) {
-    return await'This action adds a new comentario';
+    return await 'This action adds a new comentario';
   }
 
   async findAll() {

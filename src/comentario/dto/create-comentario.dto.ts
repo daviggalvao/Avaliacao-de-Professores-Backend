@@ -1,5 +1,5 @@
 export class CreateComentarioDto {
-    conteudo: string;
-    usuarioID: number; 
-    avaliacaoID: number;
+  conteudo: string;
+  usuarioID: number;
+  avaliacaoID: number;
 }
