@@ -15,7 +15,7 @@ model User {
   senha        String
   departamento String
   curso        String
-  foto_perfil  Bytes
+  foto_perfil  Bytes?
 
   Avaliacoes  Avaliacao[]
   Comentarios Comentario[]
@@ -60,10 +60,10 @@ model Disciplina{
 
   nome String
 
-  Professor Professor @relation("ProfessorDisciplina")
+  Professores Professor[] 
 
-  professoresID String[]
-  professor Professor @relation(fields: [professorID], references: [id], onDelete: Cascade, onUpdate:Cascade, name: "DisciplinaProfessor")
+ 
+  
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,10 +75,8 @@ model Professor{
 
   departamento String
 
-  Disciplina Disciplina @relation("DisciplinaProfessor")
-
-  disciplinaID Int
-  disciplina Disciplina @relation(fields: [disciplinaID], references: [id], onDelete: Cascade, onUpdate:Cascade, name: "ProfessorDisciplina")
+  disciplinaID Int?
+  disciplina Disciplina? @relation(fields: [disciplinaID], references: [id], onDelete: Cascade, onUpdate:Cascade)
 
   
  
