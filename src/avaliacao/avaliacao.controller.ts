@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AvaliacaoService } from './avaliacao.service';
 import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
@@ -8,27 +17,30 @@ export class AvaliacaoController {
   constructor(private readonly avaliacaoService: AvaliacaoService) {}
 
   @Post()
-  create(@Body() createAvaliacaoDto: CreateAvaliacaoDto) {
-    return this.avaliacaoService.create(createAvaliacaoDto);
+   async create(@Body() createAvaliacaoDto: CreateAvaliacaoDto) {
+    return await this.avaliacaoService.create(createAvaliacaoDto);
   }
 
   @Get()
-  findAll() {
-    return this.avaliacaoService.findAll();
+  async findAll() {
+    return await this.avaliacaoService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.avaliacaoService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.avaliacaoService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAvaliacaoDto: UpdateAvaliacaoDto) {
-    return this.avaliacaoService.update(+id, updateAvaliacaoDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateAvaliacaoDto: UpdateAvaliacaoDto,
+  ) {
+    return this.avaliacaoService.update(id, updateAvaliacaoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.avaliacaoService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.avaliacaoService.remove(id);
   }
 }
