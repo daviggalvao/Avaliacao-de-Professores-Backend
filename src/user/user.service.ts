@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,7 +13,8 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.prisma.user.findUnique({
-      where: { email: createUserDto.email } });
+      where: { email: createUserDto.email },
+    });
     if (existingUser) {
       throw new ConflictException('Usuário já cadastrado com esse email');
     }
@@ -22,7 +27,7 @@ export class UserService {
         senha: hashedPassword,
         curso: createUserDto.curso,
         departamento: createUserDto.departamento,
-        foto_perfil: createUserDto.foto_perfil
+        foto_perfil: createUserDto.foto_perfil,
       },
     });
     return user;
@@ -39,19 +44,21 @@ export class UserService {
         Avaliacoes: true,
         Comentarios: true,
         createdAt: true,
-        updatedAt: true
-    },
-  });
+        updatedAt: true,
+      },
+    });
   }
 
   async findOne(id: number) {
     const isValidId = await this.prisma.user.findUnique({ where: { id } });
     if (!isValidId) {
-      throw new NotFoundException(`O usuário com o id ${id} não foi encontrado`);	
+      throw new NotFoundException(
+        `O usuário com o id ${id} não foi encontrado`,
+      );
     }
     return await this.prisma.user.findUnique({
-      where: { 
-        id : id 
+      where: {
+        id: id,
       },
       select: {
         id: true,
@@ -62,8 +69,8 @@ export class UserService {
         Avaliacoes: true,
         Comentarios: true,
         createdAt: true,
-        updatedAt: true
-    },
+        updatedAt: true,
+      },
     });
   }
 
@@ -78,14 +85,16 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const isValidId = await this.prisma.user.findUnique({ where: { id } });
     if (!isValidId) {
-      throw new NotFoundException(`O usuário com o id ${id} não foi encontrado`);
+      throw new NotFoundException(
+        `O usuário com o id ${id} não foi encontrado`,
+      );
     }
 
     const hashedPassword = await bcrypt.hash(updateUserDto.senha, 10);
 
     return await this.prisma.user.update({
-      where: { 
-        id : id
+      where: {
+        id: id,
       },
       data: {
         nome: updateUserDto.nome,
@@ -93,7 +102,7 @@ export class UserService {
         senha: hashedPassword,
         curso: updateUserDto.curso,
         departamento: updateUserDto.departamento,
-        foto_perfil: updateUserDto.foto_perfil
+        foto_perfil: updateUserDto.foto_perfil,
       },
       select: {
         id: true,
@@ -104,21 +113,22 @@ export class UserService {
         Avaliacoes: true,
         Comentarios: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
       },
     });
   }
 
   async remove(id: number) {
-
     const isValidId = await this.prisma.user.findUnique({ where: { id } });
     if (!isValidId) {
-      throw new NotFoundException(`O usuário com o id ${id} não foi encontrado`);
+      throw new NotFoundException(
+        `O usuário com o id ${id} não foi encontrado`,
+      );
     }
 
     return await this.prisma.user.delete({
-      where: { 
-        id : id
+      where: {
+        id: id,
       },
       select: {
         id: true,
@@ -129,7 +139,7 @@ export class UserService {
         Avaliacoes: true,
         Comentarios: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
       },
     });
   }
