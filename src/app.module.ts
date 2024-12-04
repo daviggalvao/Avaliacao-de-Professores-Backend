@@ -12,6 +12,7 @@ import { DisciplinaModule } from './disciplina/disciplina.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/guards/auth-guard';
 
 @Module({
   imports: [
@@ -22,12 +23,16 @@ import { AuthModule } from './auth/auth.module';
     ProfessorModule,
     DisciplinaModule,
     JwtModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
   ],
   controllers: [AppController, DisciplinaController],
-  providers: [AppService, DisciplinaService],
+  providers: [
+    AppService,
+    { provide: 'APP_GUARD', useClass: AuthGuard },
+    DisciplinaService,
+  ],
 })
 export class AppModule {}
