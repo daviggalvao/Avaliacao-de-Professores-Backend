@@ -12,6 +12,9 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ValidationPipe } from '@nestjs/common';
+import { CurrentUser } from 'src/auth/decorators/CurrentUser.decorator';
+import { UserPayload } from 'src/auth/types/UserPayload';
+import { UnauthorizedException } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
@@ -33,15 +36,33 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() currentUser: UserPayload,
   ) {
-    return this.userService.update(id, updateUserDto);
+    const user = await this.userService.findOne(id);
+    if (user.id !== currentUser.sub) {
+      throw new UnauthorizedException(
+        'Avaliação não pode ser criada para outro usuário',
+      );
+    }
+
+    return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() currentUser: UserPayload,
+  ) {
+    const user = await this.userService.findOne(id);
+    if (user.id !== currentUser.sub) {
+      throw new UnauthorizedException(
+        'Avaliação não pode ser criada para outro usuário',
+      );
+    }
+
     return await this.userService.remove(id);
   }
 }
