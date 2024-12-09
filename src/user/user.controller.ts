@@ -15,21 +15,25 @@ import { ValidationPipe } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/decorators/CurrentUser.decorator';
 import { UserPayload } from 'src/auth/types/UserPayload';
 import { UnauthorizedException } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Public()
   @Post()
   async create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return await this.userService.findAll();
   }
 
+  @Public()
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.findOne(id);

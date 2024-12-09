@@ -14,6 +14,7 @@ import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
 import { CurrentUser } from 'src/auth/decorators/CurrentUser.decorator';
 import { UserPayload } from 'src/auth/types/UserPayload';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('avaliacao')
 export class AvaliacaoController {
@@ -32,11 +33,13 @@ export class AvaliacaoController {
     return await this.avaliacaoService.create(createAvaliacaoDto);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return await this.avaliacaoService.findAll();
   }
 
+  @Public()
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return await this.avaliacaoService.findOne(id);
