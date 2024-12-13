@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma, User } from '@prisma/client';
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -29,6 +31,21 @@ export class UserService {
       where: { 
         id : id, 
       },
+      include: {
+        Avaliacoes: {
+          include: {
+            Comentarios: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findOneEmail(email: string){
+    return await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      }
     });
   }
 
