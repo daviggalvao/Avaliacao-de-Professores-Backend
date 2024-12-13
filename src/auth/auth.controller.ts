@@ -8,8 +8,9 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    Login(@Body() signInDto: Record<string, any>) {
-        return this.authService.Login(signInDto.email, signInDto.senha);
+    async Login(@Body() signInDto: Record<string, any>) {
+        const result = await this.authService.Login(signInDto.email, signInDto.senha);
+        return result;
     }
 
     @UseGuards(AuthGuard)
