@@ -1,12 +1,12 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+
+import { ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma, User } from '@prisma/client';
+import { IsEmail } from 'class-validator';
 import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -30,7 +30,7 @@ export class UserService {
         foto_perfil: createUserDto.foto_perfil,
       },
     });
-    return user;
+    return newUser;
   }
 
   async findAll() {
@@ -71,15 +71,29 @@ export class UserService {
         createdAt: true,
         updatedAt: true,
       },
+      include: {
+        Avaliacoes: {
+          include: {
+            Comentarios: true,
+          },
+        },
+      },
     });
   }
 
-  async findByEmail(email: string) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return null;
-    }
-    return user;
+  async findOneEmail(email: string){
+    return await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+      include: {
+        Avaliacoes: {
+          include: {
+            Comentarios: true,
+          },
+        },
+      },
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

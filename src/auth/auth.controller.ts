@@ -1,30 +1,38 @@
-import {
-  Controller,
-  HttpStatus,
-  Post,
-  Get,
-  Body,
-  HttpCode,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginRequestBody } from './dto/loginRequestBody.dto';
+import { AuthGuard } from './auth.guard';
 import { Public } from '../auth/decorators/isPublic.decorator';
 
-@Controller()
+import { CreateUserDto } from 'src/user/dto/create-user.dto'
+import { LoginUserDto } from 'src/user/dto/login-user.dto'
+
+@Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+    constructor(private readonly authService: AuthService) {}
+    
+    @Public()
+    @HttpCode(HttpStatus.OK)
+    @Post('login')
+    async Login(@Body() dto: LoginUserDto): Promise<any>  {
+        const result = await this.authService.Login(dto);
+        return result;
+    }
+     
+    @Public()
+    @Post('register')
+    async Register(@Body() dto: CreateUserDto) {
+        const user = await this.authService.Register(dto);
+        return user;
+    }
 
-  @Public()
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  login(@Body() loginRequestBody: LoginRequestBody) {
-    return this.authService.login(loginRequestBody);
-  }
-
-  @Get('me')
-  getProfile(@Request() req) {
-    return req.user;
-  }
+    @UseGuards(AuthGuard)
+    @Get('profile')
+    getProfile(@Request() req) {
+        return req.user;
+    }
+  
+    @Get('me')
+    getProfile(@Request() req) {
+      return req.user;
+    }
 }
