@@ -6,9 +6,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+import { UserService } from 'src/user/user.service';
+import { NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { LoginValidationMiddleware } from './middleware/LoginValidationMiddleware.middleware';
+
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, PrismaService],
+  providers: [AuthService, PrismaService, UserService],
   exports: [AuthService],
   imports: [
     UserModule,
@@ -19,4 +23,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
     }),
   ],
 })
-export class AuthModule {}
+
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoginValidationMiddleware).forRoutes('login');
+  }
+}
