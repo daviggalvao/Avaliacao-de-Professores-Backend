@@ -1,25 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
+import { IsEmail } from 'class-validator';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = await this.prisma.user.create({
-      data: {
-        nome: createUserDto.nome,
-        email: createUserDto.email,
-        senha: createUserDto.senha,
-        curso: createUserDto.curso,
-        departamento: createUserDto.departamento,
-        foto_perfil: createUserDto.foto_perfil,
+  async create(dto: CreateUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
       },
     });
-    return user;
+
+    if (user) throw new ConflictException('email duplicado');
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        nome: dto.nome,
+        email: dto.email,
+        senha: dto.senha,
+        curso: dto.curso,
+        departamento: dto.departamento,
+        foto_perfil: dto.foto_perfil,
+      },
+    });
+    return newUser;
   }
 
   async findAll() {
