@@ -4,7 +4,7 @@ import {
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { LoginRequestBody } from '../dto/loginRequestBody.dto';
+import { LoginUserDto } from 'src/user/dto/login-user.dto'
 import { validate } from 'class-validator';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class LoginValidationMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
 
-    const loginRequestBody = new LoginRequestBody();
+    const loginRequestBody = new LoginUserDto();
     loginRequestBody.email = body.email;
     loginRequestBody.senha = body.senha;
 

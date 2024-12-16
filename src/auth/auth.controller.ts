@@ -30,9 +30,4 @@ export class AuthController {
     getProfile(@Request() req) {
         return req.user;
     }
-  
-    @Get('me')
-    getProfile(@Request() req) {
-      return req.user;
-    }
 }

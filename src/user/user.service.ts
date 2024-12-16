@@ -30,7 +30,7 @@ export class UserService {
         foto_perfil: createUserDto.foto_perfil,
       },
     });
-    return newUser;
+    return user;
   }
 
   async findAll() {
@@ -62,21 +62,41 @@ export class UserService {
       },
       select: {
         id: true,
+
         nome: true,
         email: true,
         curso: true,
         departamento: true,
-        Avaliacoes: true,
-        Comentarios: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-      include: {
         Avaliacoes: {
-          include: {
-            Comentarios: true,
+          select: {
+            id: true,
+
+            professor: true,
+            disciplina: true,
+            conteudo: true,
+            usuarioID: true,
+
+            createdAt: true,
+            updatedAt: true,
+
+            Comentarios: {
+              select: {
+                id: true,
+
+                conteudo: true,
+                usuarioID: true,
+
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
           },
         },
+
+        Comentarios: true,
+
+        createdAt: true,
+        updatedAt: true,
       },
     });
   }
