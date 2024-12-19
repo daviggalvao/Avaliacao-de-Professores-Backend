@@ -6,7 +6,7 @@ CREATE TABLE "User" (
     "senha" TEXT NOT NULL,
     "departamento" TEXT NOT NULL,
     "curso" TEXT NOT NULL,
-    "foto_perfil" BLOB NOT NULL,
+    "foto_perfil" BLOB,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
@@ -14,12 +14,14 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Avaliacao" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "professor" TEXT NOT NULL,
-    "disciplina" TEXT NOT NULL,
+    "professorID" INTEGER NOT NULL,
+    "disciplinaID" INTEGER NOT NULL,
     "conteudo" TEXT NOT NULL,
     "usuarioID" INTEGER NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Avaliacao_professorID_fkey" FOREIGN KEY ("professorID") REFERENCES "Professor" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Avaliacao_disciplinaID_fkey" FOREIGN KEY ("disciplinaID") REFERENCES "Disciplina" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Avaliacao_usuarioID_fkey" FOREIGN KEY ("usuarioID") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -48,7 +50,7 @@ CREATE TABLE "Professor" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "nome" TEXT NOT NULL,
     "departamento" TEXT NOT NULL,
-    "disciplinaID" INTEGER NOT NULL,
+    "disciplinaID" INTEGER,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Professor_disciplinaID_fkey" FOREIGN KEY ("disciplinaID") REFERENCES "Disciplina" ("id") ON DELETE CASCADE ON UPDATE CASCADE

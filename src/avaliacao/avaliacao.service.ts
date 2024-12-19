@@ -6,12 +6,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class AvaliacaoService {
   constructor(private readonly prisma: PrismaService) {}
-  
+
   async create(createAvaliacaoDto: CreateAvaliacaoDto) {
     const aval = await this.prisma.avaliacao.create({
       data: {
-        professor: createAvaliacaoDto.professor,
-        disciplina: createAvaliacaoDto.disciplina,
+        professorID: createAvaliacaoDto.professorID,
+        disciplinaID: createAvaliacaoDto.disciplinaID,
         conteudo: createAvaliacaoDto.conteudo,
         usuarioID: createAvaliacaoDto.usuarioID,
       },
@@ -25,20 +25,20 @@ export class AvaliacaoService {
 
   async findOne(id: number) {
     return await this.prisma.avaliacao.findUnique({
-      where: { 
-        id : id, 
+      where: {
+        id: id,
       },
     });
   }
 
   async update(id: number, updateAvaliacaoDto: UpdateAvaliacaoDto) {
     return await this.prisma.avaliacao.update({
-      where: { 
-        id : id, 
+      where: {
+        id: id,
       },
       data: {
-        professor: updateAvaliacaoDto.professor,
-        disciplina: updateAvaliacaoDto.disciplina,
+        professorID: updateAvaliacaoDto.professorID,
+        disciplinaID: updateAvaliacaoDto.disciplinaID,
         conteudo: updateAvaliacaoDto.conteudo,
         usuarioID: updateAvaliacaoDto.usuarioID,
       },
@@ -47,8 +47,8 @@ export class AvaliacaoService {
 
   async remove(id: number) {
     return await this.prisma.avaliacao.delete({
-      where: { 
-        id : id, 
+      where: {
+        id: id,
       },
     });
   }
