@@ -56,13 +56,13 @@ export class UserService {
         `O usuário com o id ${id} não foi encontrado`,
       );
     }
+  
     return await this.prisma.user.findUnique({
       where: {
         id: id,
       },
       select: {
         id: true,
-
         nome: true,
         email: true,
         curso: true,
@@ -70,36 +70,41 @@ export class UserService {
         Avaliacoes: {
           select: {
             id: true,
-
-            professor: true,
-            disciplina: true,
             conteudo: true,
+            professorID: true, // Você pode manter a chave do professor se precisar, mas aqui não é necessário incluir diretamente.
+            disciplinaID: true, // Pode ser mantido, mas você vai pegar o nome da disciplina com a relação.
             usuarioID: true,
-
             createdAt: true,
             updatedAt: true,
-
+            // Relacionamentos para professor e disciplina:
+            professor: { // A relação professor deve ser explicitada aqui.
+              select: {
+                nome: true, // Selecionando o nome do professor
+              },
+            },
+            disciplina: { // A relação disciplina deve ser explicitada aqui.
+              select: {
+                nome: true, // Selecionando o nome da disciplina
+              },
+            },
             Comentarios: {
               select: {
                 id: true,
-
                 conteudo: true,
                 usuarioID: true,
-
                 createdAt: true,
                 updatedAt: true,
               },
             },
           },
         },
-
         Comentarios: true,
-
         createdAt: true,
         updatedAt: true,
       },
     });
   }
+  
 
   async findOneEmail(email: string){
     return await this.prisma.user.findUnique({

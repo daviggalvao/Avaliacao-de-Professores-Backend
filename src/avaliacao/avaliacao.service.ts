@@ -10,8 +10,8 @@ export class AvaliacaoService {
   async create(createAvaliacaoDto: CreateAvaliacaoDto) {
     const aval = await this.prisma.avaliacao.create({
       data: {
-        professor: createAvaliacaoDto.professor,
-        disciplina: createAvaliacaoDto.disciplina,
+        professorID: createAvaliacaoDto.professorID,
+        disciplinaID: createAvaliacaoDto.disciplinaID,
         conteudo: createAvaliacaoDto.conteudo,
         usuarioID: createAvaliacaoDto.usuarioID,
       },
@@ -37,8 +37,8 @@ export class AvaliacaoService {
         id : id, 
       },
       data: {
-        professor: updateAvaliacaoDto.professor,
-        disciplina: updateAvaliacaoDto.disciplina,
+        professorID: updateAvaliacaoDto.professorID,
+        disciplinaID: updateAvaliacaoDto.disciplinaID,
         conteudo: updateAvaliacaoDto.conteudo,
         usuarioID: updateAvaliacaoDto.usuarioID,
       },
