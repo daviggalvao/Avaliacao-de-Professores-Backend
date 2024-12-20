@@ -24,10 +24,51 @@ export class ProfessorService {
   async findOne(id: number) {
     return await this.prisma.professor.findUnique({
       where: { 
-        id : id, 
+        id: id,
+      },
+      select: {
+        nome: true,
+        departamento: true,
+        disciplinaID: true,
+        disciplina: {
+          select: {
+            nome: true, // Nome da disciplina
+          },
+        },
+        Avaliacoes: {
+          select: {
+            id: true,
+            conteudo: true,
+            professorID: true,
+            disciplinaID: true,
+            usuarioID: true,
+            createdAt: true,
+            updatedAt: true,
+            disciplina: {
+              select: {
+                nome: true, // Nome da disciplina associada à avaliação
+              },
+            },
+            professor: {
+              select: {
+                nome: true, // Nome do professor associado à avaliação
+              },
+            },
+            Comentarios: {
+              select: {
+                id: true,
+                conteudo: true,
+                usuarioID: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
       },
     });
   }
+  
 
   async update(id: number, updateProfessorDto: UpdateProfessorDto) {
     return await this.prisma.professor.update({

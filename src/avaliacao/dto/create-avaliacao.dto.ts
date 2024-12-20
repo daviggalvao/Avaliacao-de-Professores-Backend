@@ -1,6 +1,6 @@
 export class CreateAvaliacaoDto {
-  professor: string;
-  disciplina: string;
+  professorID: number;
+  disciplinaID: number;
   conteudo: string;
   usuarioID: number;
 }
