@@ -30,7 +30,8 @@ export class AvaliacaoService {
       },
       include: {
         professor: true,
-        disciplina: true
+        disciplina: true,
+        Comentarios: true,
       }
     });
   }
