@@ -28,6 +28,10 @@ export class AvaliacaoService {
       where: { 
         id : id, 
       },
+      include: {
+        professor: true,
+        disciplina: true
+      }
     });
   }
 
