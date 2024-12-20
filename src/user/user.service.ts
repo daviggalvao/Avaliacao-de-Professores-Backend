@@ -122,19 +122,25 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    console.log('chegou até aqui', updateUserDto)
     const isValidId = await this.prisma.user.findUnique({ where: { id } });
     if (!isValidId) {
       throw new NotFoundException(
         `O usuário com o id ${id} não foi encontrado`,
       );
     }
+    console.log('chegou', updateUserDto)
 
-    const hashedPassword = await bcrypt.hash(updateUserDto.senha, 10);
+    let hashedPassword = undefined
+    if (updateUserDto.senha) {
+        hashedPassword = await bcrypt.hash(updateUserDto.senha, 10);
+    }
 
-    return await this.prisma.user.update({
-      where: {
-        id: id,
-      },
+    console.log('chegou 2', updateUserDto)
+    
+    try{
+     await this.prisma.user.update({
+      where: {id: id,},
       data: {
         nome: updateUserDto.nome,
         email: updateUserDto.email,
@@ -155,6 +161,9 @@ export class UserService {
         updatedAt: true,
       },
     });
+    }catch (error){
+      console.log(error)
+    }
   }
 
   async remove(id: number) {

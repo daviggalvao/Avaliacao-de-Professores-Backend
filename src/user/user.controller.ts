@@ -45,6 +45,7 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @CurrentUser() currentUser: UserPayload,
   ) {
+    console.log('estou cheando até aqui')
     const user = await this.userService.findOne(id);
     if (user.id !== currentUser.sub) {
       throw new UnauthorizedException(
