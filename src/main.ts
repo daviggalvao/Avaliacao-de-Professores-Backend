@@ -5,11 +5,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'http://172.29.38.217:3000', // Ou use '*' para permitir qualquer origem
+    origin: true, // Ou use '*' para permitir qualquer origem
     methods: 'GET,POST,PUT,DELETE,PATCH', // Métodos permitidos
     allowedHeaders: 'Content-Type, Authorization', // Cabeçalhos permitidos
   });
 
-  await app.listen(8000);
+  const port = process.env.PORT || 3000; // PORTA_DO_NESTJS
+  await app.listen(port, '0.0.0.0');
+  console.log(`Application is running on: http://0.0.0.0:${port}`);
 }
 bootstrap();
