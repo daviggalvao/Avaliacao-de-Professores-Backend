@@ -5,13 +5,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: true, // Ou use '*' para permitir qualquer origem
-    methods: 'GET,POST,PUT,DELETE,PATCH', // Métodos permitidos
-    allowedHeaders: 'Content-Type, Authorization', // Cabeçalhos permitidos
+    origin: '*', // Allow all origins for testing
+    methods: 'GET,POST,PUT,DELETE,PATCH',
+    allowedHeaders: 'Content-Type, Authorization',
   });
 
-  const port = process.env.PORT || 3000; // PORTA_DO_NESTJS
-  await app.listen(port, '0.0.0.0');
-  console.log(`Application is running on: http://0.0.0.0:${port}`);
+  const port = process.env.PORT || 8000;
+  await app.listen(port, '0.0.0.0'); // Listen on all network interfaces
+  console.log(`Application is running on: http://localhost:${port}`);
 }
 bootstrap();
